@@ -1,0 +1,39 @@
+﻿@model FormBuilder.Models.FormElement
+@{
+    ViewData["Title"] = "FormField";
+}
+
+<h1>Form Fields</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="FormField">
+            <input type="hidden" asp-for="FormDataId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ElementLabel" class="control-label"></label>
+                <input asp-for="ElementLabel" class="form-control" />
+                <span asp-validation-for="ElementLabel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ElementType" class="control-label"></label>
+                <input asp-for="ElementType" class="form-control" />
+                <span asp-validation-for="ElementType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ElementValue" class="control-label"></label>
+                <input asp-for="ElementValue" class="form-control" />
+                <span asp-validation-for="ElementValue" class="text-danger"></span>
+            </div>
+            
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
