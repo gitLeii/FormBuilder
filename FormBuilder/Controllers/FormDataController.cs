@@ -2,7 +2,6 @@
 using FormBuilder.Data;
 using FormBuilder.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace FormBuilder.Controllers
@@ -61,7 +60,7 @@ namespace FormBuilder.Controllers
             }
             return View(formData);
         }
-        public async Task<IActionResult> FormFieldAsync(int? id)
+        public async Task<IActionResult> FormFieldAsync(int id)
         {
             if (id == null)
             {
@@ -73,13 +72,16 @@ namespace FormBuilder.Controllers
             {
                 return NotFound();
             }
-            FormElement element = new FormElement();
-            element.FormDataId = formData.Id;
+            FormElement element = new FormElement
+            {
+                FormData = formData,
+                FormDataId = id
+            };
             return View(element);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FormField(int id, [Bind(include: "ElementId,ElementLabel,ElementType,ElementValue,FormDataId")] FormElement formElement)
+        public async Task<IActionResult> FormField(int id, [Bind("ElementId,ElementLabel,ElementType,ElementValue,FormDataId")] FormElement formElement)
         {
             if (id != formElement.FormDataId)
             {
@@ -87,12 +89,10 @@ namespace FormBuilder.Controllers
             }
             if (ModelState.IsValid)
             {
-                formElement.FormData.Id = id;
                 _context.Elements.Add(formElement);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FormDataId"] = new SelectList(_context.Forms, "Id", "Id", formElement.FormDataId);
             return View(formElement);
         }
         public async Task<IActionResult> FormCreateField()

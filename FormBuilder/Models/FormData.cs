@@ -32,6 +32,6 @@ namespace FormBuilder.Models
         public string ElementValue { get; set; } = string.Empty;
         [Required]
         public int FormDataId { get; set; }
-        public FormData FormData { get; set; }
+        public virtual FormData FormData { get; set; }
     }
 }
