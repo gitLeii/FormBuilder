@@ -9,7 +9,9 @@ namespace FormBuilder.Models
             FormElements = new List<FormElement>();
         }
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; } = string.Empty;
+        [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]
         public DateTime CreatedDate { get; set; }
@@ -17,10 +19,6 @@ namespace FormBuilder.Models
     }
     public class FormElement
     {
-        public FormElement()
-        {
-            FormData = new FormData();
-        }
         [Key]
         public int ElementId { get; set; }
         [Required]
@@ -32,6 +30,6 @@ namespace FormBuilder.Models
         public string ElementValue { get; set; } = string.Empty;
         [Required]
         public int FormDataId { get; set; }
-        public virtual FormData FormData { get; set; }
+        public FormData? FormData { get; set; }
     }
 }

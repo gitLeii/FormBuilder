@@ -72,11 +72,9 @@ namespace FormBuilder.Controllers
             {
                 return NotFound();
             }
-            FormElement element = new FormElement
-            {
-                FormData = formData,
-                FormDataId = id
-            };
+            FormElement element = new();
+            element.FormData = formData;
+            element.FormDataId = id;
             return View(element);
         }
         [HttpPost]
@@ -95,7 +93,7 @@ namespace FormBuilder.Controllers
             }
             return View(formElement);
         }
-        public async Task<IActionResult> FormCreateField()
+        public async Task<IActionResult> FormCreateField(int id)
         {
             return View(await _context.Elements.ToListAsync());
         }
