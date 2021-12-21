@@ -3,6 +3,7 @@
     ViewData["Title"] = "Form Elements";
 }
 <h2>Form Fields</h2>
+<a asp-action="FormField" asp-route-id=>Add more fields.</a>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="FormCreateField">            
@@ -22,3 +23,7 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

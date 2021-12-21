@@ -95,7 +95,10 @@ namespace FormBuilder.Controllers
         }
         public async Task<IActionResult> FormCreateField(int id)
         {
-            return View(await _context.Elements.ToListAsync());
+            var elements = from e in _context.Elements
+                           where e.FormDataId == id
+                           select e;
+            return View(await elements.ToListAsync());
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
