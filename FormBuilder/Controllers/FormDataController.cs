@@ -60,6 +60,8 @@ namespace FormBuilder.Controllers
             }
             return View(formData);
         }
+
+        // Create Form Fields
         public async Task<IActionResult> FormFieldAsync(int id)
         {
             if (id == null)
@@ -93,11 +95,13 @@ namespace FormBuilder.Controllers
             }
             return View(formElement);
         }
+        // View Created Form Fields
         public async Task<IActionResult> FormCreateField(int id)
         {
             var elements = from e in _context.Elements
                            where e.FormDataId == id
                            select e;
+            ViewBag.Id = id;
             return View(await elements.ToListAsync());
         }
         [HttpPost]
@@ -110,6 +114,33 @@ namespace FormBuilder.Controllers
             }
             return View();
         }
+        public async Task<IActionResult> FormDeleteField(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var formElement = await _context.Elements
+                .FirstOrDefaultAsync(m => m.ElementId == id);
+            if (formElement == null)
+            {
+                return NotFound();
+            }
+
+            return View(formElement);
+        }
+        // 
+        [HttpPost, ActionName("FormDeleteField")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FormDeleteConfirmed(int id)
+        {
+            var element = await _context.Elements.FindAsync(id);
+            _context.Elements.Remove(element);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("FormCreateField", element.FormDataId);
+        }
+
         // GET: FormData/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
