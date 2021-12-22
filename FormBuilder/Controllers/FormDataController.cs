@@ -89,6 +89,7 @@ namespace FormBuilder.Controllers
             }
             var elements = from e in _context.Elements
                            where e.ElementLabel == formElement.ElementLabel
+                           && e.FormDataId == formElement.FormDataId
                            select e;
             if (!elements.Any())
             {
