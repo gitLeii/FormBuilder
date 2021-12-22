@@ -101,7 +101,6 @@ namespace FormBuilder.Controllers
             var elements = from e in _context.Elements
                            where e.FormDataId == id
                            select e;
-            ViewBag.Id = id;
             return View(await elements.ToListAsync());
         }
         [HttpPost]
@@ -138,7 +137,7 @@ namespace FormBuilder.Controllers
             var element = await _context.Elements.FindAsync(id);
             _context.Elements.Remove(element);
             await _context.SaveChangesAsync();
-            return RedirectToAction("FormCreateField", element.FormDataId);
+            return RedirectToAction("FormCreateField", new { id = element.FormDataId });
         }
 
         // GET: FormData/Edit/5

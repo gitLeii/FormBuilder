@@ -2,11 +2,10 @@
 @{
     ViewData["Title"] = "Form Elements";
 }
-@{
-    int id = ViewBag.Id;
-}
+
 <h2>Form Fields</h2>
-<a asp-action="FormField" asp-route-id="@id" class="btn-light btn-sm btn">Add more fields.</a>
+<a asp-action="FormField" asp-route-id="@Model.First().FormDataId" class="btn-light btn-sm btn">Add more fields.</a>
+<br />
 <div class="row">
     <div class="col-md-10">
         <form asp-action="FormCreateField">            
@@ -44,6 +43,7 @@
                             </div>
                             <div class="col-md-2" >
                                 <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger">Delete</a>
+                                
                             </div>
                         </div>                        
                     }                

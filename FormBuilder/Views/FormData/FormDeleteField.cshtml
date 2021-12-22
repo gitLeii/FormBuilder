@@ -11,5 +11,5 @@
     <form asp-action="FormDeleteField">
         <input type="hidden" asp-for="ElementId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="FormCreateField" asp-route-id="@Model.FormDataId">Back to List</a>
     </form>
