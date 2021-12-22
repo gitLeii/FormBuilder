@@ -29,9 +29,6 @@
                                 <span asp-validation-for="@item.ElementLabel" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-1" >
-                                <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger my-3">Delete</a>
-                            </div>
                         </div>
                     }
                     else if(@item.ElementType == "radio" || @item.ElementType == "checkbox")
@@ -49,10 +46,6 @@
                                 </div>
                                 <span asp-validation-for="@item.ElementLabel" class="text-danger"></span>
                                 </div> 
-                            </div>
-                            <div class="col-md-2" >
-                                <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger my-3">Delete</a>
-                                
                             </div>
                         </div>                        
                     }                

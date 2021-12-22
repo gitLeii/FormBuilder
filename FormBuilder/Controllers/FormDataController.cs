@@ -116,41 +116,18 @@ namespace FormBuilder.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FormCreateField(int id, FormElement formElement)
+        public async Task<IActionResult> FormCreateField(int id, FormSubmittedData formSubmittedData)
         {
             if (ModelState.IsValid)
             {
-                return View(formElement);
+                return View(formSubmittedData);
             }
             return View();
         }
-        public async Task<IActionResult> FormDeleteField(int? id)
+        public IActionResult FormSubmitField(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var formElement = await _context.Elements
-                .FirstOrDefaultAsync(m => m.ElementId == id);
-            if (formElement == null)
-            {
-                return NotFound();
-            }
-
-            return View(formElement);
+            return View();
         }
-        // 
-        [HttpPost, ActionName("FormDeleteField")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FormDeleteConfirmed(int id)
-        {
-            var element = await _context.Elements.FindAsync(id);
-            _context.Elements.Remove(element);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("FormCreateField", new { id = element.FormDataId });
-        }
-
         // GET: FormData/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
