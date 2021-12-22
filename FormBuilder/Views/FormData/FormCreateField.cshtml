@@ -2,21 +2,25 @@
 @{
     ViewData["Title"] = "Form Elements";
     int? id = ViewBag.Id;
+    string? name = ViewBag.FormName;
 }
 
 <h2>Form Fields</h2>
 <a asp-action="FormField" asp-route-id="@id" class="btn-light btn-sm btn">Add more fields.</a>
 <br />
+<br />
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-8">
         <form asp-action="FormCreateField">
+            <fieldset class="border p-2">
+            <legend class="w-auto">@name</legend>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @foreach (var item in Model)
             {
                     if( @item.ElementType != "radio" && @item.ElementType != "checkbox")
                     {
                         <div class="row">
-                            <div  class="col-md-4">
+                            <div  class="col-md-5">
                                 <div class="form-group">
                                 <label asp-for="@item.ElementLabel" class="control-label">@item.ElementLabel</label>
                                 <br />
@@ -25,8 +29,8 @@
                                 <span asp-validation-for="@item.ElementLabel" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-2" >
-                                <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger">Delete</a>
+                            <div class="col-md-1" >
+                                <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger my-3">Delete</a>
                             </div>
                         </div>
                     }
@@ -43,7 +47,7 @@
                                 </div> 
                             </div>
                             <div class="col-md-2" >
-                                <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger">Delete</a>
+                                <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger my-3">Delete</a>
                                 
                             </div>
                         </div>                        
@@ -53,6 +57,7 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-sm btn-primary" />
             </div>
+            </fieldset>
         </form>
     </div>
 </div>

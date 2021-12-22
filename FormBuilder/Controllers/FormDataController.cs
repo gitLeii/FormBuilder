@@ -109,7 +109,9 @@ namespace FormBuilder.Controllers
             var elements = from e in _context.Elements
                            where e.FormDataId == id
                            select e;
+            FormData formData = await _context.Forms.FindAsync(id);
             ViewBag.Id = id;
+            ViewBag.FormName = formData.Name;
             return View(await elements.ToListAsync());
         }
         [HttpPost]
