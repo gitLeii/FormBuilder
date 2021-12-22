@@ -6,40 +6,51 @@
     int id = ViewBag.Id;
 }
 <h2>Form Fields</h2>
-<a asp-action="FormField" asp-route-id="@id">Add more fields.</a>
+<a asp-action="FormField" asp-route-id="@id" class="btn-light btn-sm btn">Add more fields.</a>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-10">
         <form asp-action="FormCreateField">            
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @foreach (var item in Model)
             {
                     if( @item.ElementType != "radio" && @item.ElementType != "checkbox")
                     {
-                        <div class="form-group col-md-6">
-                        <label asp-for="@item.ElementLabel" class="control-label">@item.ElementLabel</label>
-                        <br />
-                        <input type="@item.ElementType" value="@item.ElementValue" class="form-control" />
-                        <br />
-                        <span asp-validation-for="@item.ElementLabel" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6" >
-                        <a asp-action="FormDeleteField" asp-route-id="@item.ElementId">Delete Field.</a>
+                        <div class="row">
+                            <div  class="col-md-4">
+                                <div class="form-group">
+                                <label asp-for="@item.ElementLabel" class="control-label">@item.ElementLabel</label>
+                                <br />
+                                <input type="@item.ElementType" value="@item.ElementValue" class="form-control" />
+                                <br />
+                                <span asp-validation-for="@item.ElementLabel" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2" >
+                                <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
                         </div>
                     }
                     else if(@item.ElementType == "radio" || @item.ElementType == "checkbox")
                     {
-                        <div class="form-group">
-                        <label asp-for="@item.ElementLabel" class="control-label">@item.ElementLabel</label>
-                        <br />
-                        <input type="@item.ElementType" value="@item.ElementValue" class="d-inline"/>
-                        <br />
-                        <span asp-validation-for="@item.ElementLabel" class="text-danger"></span>
-                        </div>                       
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                <label asp-for="@item.ElementLabel" class="control-label">@item.ElementLabel</label>
+                                <br />
+                                <input type="@item.ElementType" value="@item.ElementValue" class="d-inline"/>
+                                <br />
+                                <span asp-validation-for="@item.ElementLabel" class="text-danger"></span>
+                                </div> 
+                            </div>
+                            <div class="col-md-2" >
+                                <a asp-action="FormDeleteField" asp-route-id="@item.ElementId" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
+                        </div>                        
                     }                
             }
             <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-sm btn-primary" />
             </div>
         </form>
     </div>
