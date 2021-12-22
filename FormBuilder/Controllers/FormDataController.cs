@@ -87,12 +87,20 @@ namespace FormBuilder.Controllers
             {
                 return NotFound();
             }
-            if (ModelState.IsValid)
+            var elements = from e in _context.Elements
+                           where e.ElementLabel == formElement.ElementLabel
+                           select e;
+            if (!elements.Any())
             {
-                _context.Elements.Add(formElement);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Elements.Add(formElement);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(formElement);
             }
+            ModelState.AddModelError("ElementLabel", "Element already exists.");
             return View(formElement);
         }
         // View Created Form Fields
@@ -101,6 +109,7 @@ namespace FormBuilder.Controllers
             var elements = from e in _context.Elements
                            where e.FormDataId == id
                            select e;
+            ViewBag.Id = id;
             return View(await elements.ToListAsync());
         }
         [HttpPost]

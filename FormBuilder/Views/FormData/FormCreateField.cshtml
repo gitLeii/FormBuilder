@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<FormBuilder.Models.FormElement>
 @{
     ViewData["Title"] = "Form Elements";
+    int? id = ViewBag.Id;
 }
 
 <h2>Form Fields</h2>
-<a asp-action="FormField" asp-route-id="@Model.First().FormDataId" class="btn-light btn-sm btn">Add more fields.</a>
+<a asp-action="FormField" asp-route-id="@id" class="btn-light btn-sm btn">Add more fields.</a>
 <br />
 <div class="row">
     <div class="col-md-10">
-        <form asp-action="FormCreateField">            
+        <form asp-action="FormCreateField">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @foreach (var item in Model)
             {
