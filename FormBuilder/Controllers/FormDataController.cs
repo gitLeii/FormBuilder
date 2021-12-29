@@ -113,20 +113,48 @@ namespace FormBuilder.Controllers
             FormData formData = await _context.Forms.FindAsync(id);
             ViewBag.Id = id;
             ViewBag.FormName = formData.Name;
+
+            SqlConnectionAdo sqlConnectionAdo = new SqlConnectionAdo();
+            List<string> columnName = new List<string>();
+
+            foreach (var element in elements)
+            {
+                columnName.Add(element.ElementLabel);
+
+            }
+            sqlConnectionAdo.Submit(formData.Name, columnName);
+
             return View(await elements.ToListAsync());
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FormCreateField(int id, FormSubmittedData formSubmittedData)
+        public async Task<IActionResult> FormCreateField(int id, [Bind("ElementId,ElementLabel,ElementType,ElementValue,FormDataId")] List<FormElement> formElement)
         {
             if (ModelState.IsValid)
             {
-                return View(formSubmittedData);
+                /*FormData formData = await _context.Forms.FindAsync(id);
+                string cs = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+                SqlConnection con = new(cs);
+
+                string sqlStatement = string.Format("CREATE TABLE dbo.{0} ([ID] [int] IDENTITY(1,1) NOT NULL)", formData.Name);
+
+                con.Open();
+
+                SqlCommand sqlCmd = new SqlCommand(sqlStatement, con);
+
+                sqlCmd.ExecuteNonQuery();
+
+                con.Close();*/
+
+                return View();
             }
             return View();
         }
-        public IActionResult FormSubmitField(int id)
+        public IActionResult FormDetails()
         {
+            //return View(_context.DataSets.ToList());
             return View();
         }
         // GET: FormData/Edit/5

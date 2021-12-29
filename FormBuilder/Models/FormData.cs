@@ -32,9 +32,5 @@ namespace FormBuilder.Models
         public int FormDataId { get; set; }
         public FormData? FormData { get; set; }
     }
-    public class FormSubmittedData
-    {
-        public int FormSubmittedDataId { get; set; }
 
-    }
 }

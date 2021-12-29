@@ -1,0 +1,35 @@
+﻿@*@model IEnumerable<FormBuilder.Models.FormSubmittedData>
+
+@{
+    ViewData["Title"] = "Data";
+}
+
+<h1>Data</h1>
+<h3></h3>
+<p>
+    <a asp-action="FormCreateField">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            @foreach( var item in Model)
+            {
+                <th>
+                    @Html.DisplayFor(modelitem => item.ElementLabel)
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.FirstOrDefault().FormSubmittedDataId</td>>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelitem => item.ElementValue)
+            </td>
+        }
+        </tr>
+    </tbody>
+</table>*@
