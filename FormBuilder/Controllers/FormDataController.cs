@@ -243,6 +243,8 @@ namespace FormBuilder.Controllers
             var formData = await _context.Forms.FindAsync(id);
             _context.Forms.Remove(formData);
             await _context.SaveChangesAsync();
+            SqlConnectionAdo sqlConnectionAdo = new SqlConnectionAdo();
+            sqlConnectionAdo.Delete(formData.Name);
             return RedirectToAction(nameof(Index));
         }
 

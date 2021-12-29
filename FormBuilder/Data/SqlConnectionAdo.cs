@@ -18,7 +18,7 @@ namespace FormBuilder.Data
             if (!CheckObjectExists(tableName, "CheckTableExists"))
             {
                 /* If table object not exists then Create the Table*/
-                ExuecuteToSQL(createTableScript);
+                ExecuteToSQL(createTableScript);
             }
             string alterColumnScript = string.Empty;
 
@@ -30,13 +30,13 @@ namespace FormBuilder.Data
                 {
                     /* If column not exists then Add it to table*/
                     alterColumnScript = string.Format(addColumnScript, tableName, columnname);
-                    ExuecuteToSQL(alterColumnScript);
+                    ExecuteToSQL(alterColumnScript);
                 }
             }
 
             /* Insert Script You Need to Maintain according to your Column with control value with proper order */
             string insertScript = string.Format(" INSERT INTO {0}({1}) ", tableName, columnLists);
-            ExuecuteToSQL(insertScript);
+            ExecuteToSQL(insertScript);
         }
         public void Insert(string tblName, List<string> columnName, string values)
         {
@@ -52,7 +52,17 @@ namespace FormBuilder.Data
             }
             string cols = String.Join(",", colLists);
             string insertScript = string.Format(" INSERT INTO {0}({1}) VALUES({2}) ", tableName, columnLists, cols);
-            ExuecuteToSQL(insertScript);
+            ExecuteToSQL(insertScript);
+        }
+        public void Delete(string tblName)
+        {
+            if (CheckObjectExists(tblName, "CheckTableExists"))
+            {
+                /* If table object not exists then Create the Table*/
+                string deleteScript = string.Format("DROP TABLE {0}", tblName);
+                ExecuteToSQL(deleteScript);
+            }
+
         }
         protected bool CheckObjectExists(string tableName, string spName, string columnname = "")
         {
@@ -79,7 +89,7 @@ namespace FormBuilder.Data
             }
             return isObjectExist;
         }
-        protected void ExuecuteToSQL(string sqlQuery)
+        protected void ExecuteToSQL(string sqlQuery)
         {
             string constr = "Server=(localdb)\\mssqllocaldb;Database=aspnet-FormBuilder-B5DDBB83-DF30-4FA5-AB89-D08ED9B1540B;Trusted_Connection=True;MultipleActiveResultSets=true";
 
