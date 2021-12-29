@@ -12,11 +12,7 @@ namespace FormBuilder.Data
             string trim = Regex.Replace(tblName, @"\s", "");
             string tableName = trim;
             List<string> columnList = columnName;
-            string columnLists = "";
-            foreach (string item in columnList)
-            {
-                columnLists = columnLists + item + ",";
-            }
+            string columnLists = String.Join(",", columnList);
             string createTableScript = string.Format("CREATE TABLE {0}([FormID] [int] IDENTITY(1,1) NOT NULL)", tableName);
             string addColumnScript = "ALTER TABLE {0} Add {1} [nvarchar](Max)";
             if (!CheckObjectExists(tableName, "CheckTableExists"))
@@ -39,7 +35,23 @@ namespace FormBuilder.Data
             }
 
             /* Insert Script You Need to Maintain according to your Column with control value with proper order */
-            string insertScript = string.Format(" INSERT INTO {0}({1})) ", tableName, columnLists);
+            string insertScript = string.Format(" INSERT INTO {0}({1}) ", tableName, columnLists);
+            ExuecuteToSQL(insertScript);
+        }
+        public void Insert(string tblName, List<string> columnName, string values)
+        {
+            string trim = Regex.Replace(tblName, @"\s", "");
+            string tableName = trim;
+            List<string> columnList = columnName;
+            string columnLists = String.Join(",", columnList);
+            List<string> colLists = new List<string>();
+            foreach (var item in values.Split(','))
+            {
+                string temp = "'" + item + "'";
+                colLists.Add(temp);
+            }
+            string cols = String.Join(",", colLists);
+            string insertScript = string.Format(" INSERT INTO {0}({1}) VALUES({2}) ", tableName, columnLists, cols);
             ExuecuteToSQL(insertScript);
         }
         protected bool CheckObjectExists(string tableName, string spName, string columnname = "")
@@ -75,9 +87,17 @@ namespace FormBuilder.Data
             {
                 using (SqlCommand cmd = new(sqlQuery, con))
                 {
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
                 }
             }
 

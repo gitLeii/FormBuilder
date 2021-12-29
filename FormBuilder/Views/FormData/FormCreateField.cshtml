@@ -24,7 +24,7 @@
                                 <div class="form-group">
                                 <label asp-for="@item.ElementLabel" class="control-label">@item.ElementLabel</label>
                                 <br />
-                                <input type="@item.ElementValue" placeholder="@item.ElementValue" asp-for="@item.ElementValue" class="form-control" />
+                                <input type="@item.ElementValue" placeholder="@item.ElementValue" name="ElementValue" class="form-control" />
                                 <br />
                                 <span asp-validation-for="@item.ElementLabel" class="text-danger"></span>
                                 </div>
@@ -39,7 +39,7 @@
                                 <label asp-for="@item.ElementLabel" class="control-label">@item.ElementLabel</label>
                                 <br />
                                 <div class="form-check">
-                                  <input class="form-check-input" type="@item.ElementType" asp-for="@item.ElementValue" id="flexCheckDefault">
+                                  <input class="form-check-input" type="@item.ElementType" name="ElementValue" id="flexCheckDefault">
                                   <label class="form-check-label" for="flexCheckDefault">
                                     @item.ElementValue
                                   </label>

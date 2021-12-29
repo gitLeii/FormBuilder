@@ -127,28 +127,37 @@ namespace FormBuilder.Controllers
             return View(await elements.ToListAsync());
         }
 
+        public HttpContext GetHttpContext()
+        {
+            return HttpContext;
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FormCreateField(int id, [Bind("ElementId,ElementLabel,ElementType,ElementValue,FormDataId")] List<FormElement> formElement)
+        public async Task<IActionResult> FormCreateField(int id, string[] ElementValue)
         {
             if (ModelState.IsValid)
             {
-                /*FormData formData = await _context.Forms.FindAsync(id);
-                string cs = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                string[] val = HttpContext.Request.Form["ElementValue"];
+                string values = String.Join(",", val);
+                var elements = from e in _context.Elements
+                               where e.FormDataId == id
+                               select e;
+                FormData formData = await _context.Forms.FindAsync(id);
 
-                SqlConnection con = new(cs);
+                ViewBag.Id = id;
+                ViewBag.FormName = formData.Name;
 
-                string sqlStatement = string.Format("CREATE TABLE dbo.{0} ([ID] [int] IDENTITY(1,1) NOT NULL)", formData.Name);
+                SqlConnectionAdo sqlConnectionAdo = new SqlConnectionAdo();
+                List<string> columnName = new List<string>();
 
-                con.Open();
+                foreach (var element in elements)
+                {
+                    columnName.Add(element.ElementLabel);
 
-                SqlCommand sqlCmd = new SqlCommand(sqlStatement, con);
-
-                sqlCmd.ExecuteNonQuery();
-
-                con.Close();*/
-
-                return View();
+                }
+                sqlConnectionAdo.Insert(formData.Name, columnName, values);
+                return View(await elements.ToListAsync());
             }
             return View();
         }
