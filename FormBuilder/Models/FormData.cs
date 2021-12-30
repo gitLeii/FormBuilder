@@ -32,5 +32,16 @@ namespace FormBuilder.Models
         public int FormDataId { get; set; }
         public FormData? FormData { get; set; }
     }
+    public class FormValidation
+    {
+        public FormValidation()
+        {
+            FormElements = new List<FormElement>();
+        }
+        public int FormValidationId { get; set; }
+        public string ElementValue { get; set; }
+        public string ValidationType { get; set; } = string.Empty;
+        public virtual ICollection<FormElement> FormElements { get; set; }
+    }
 
 }

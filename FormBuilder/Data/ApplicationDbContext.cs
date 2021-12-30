@@ -9,7 +9,8 @@ namespace FormBuilder.Data
             : base(options)
         {
         }
-        public DbSet<FormBuilder.Models.FormData> Forms { get; set; }
-        public DbSet<FormBuilder.Models.FormElement> Elements { get; set; }
+        public DbSet<FormBuilder.Models.FormData>? Forms { get; set; }
+        public DbSet<FormBuilder.Models.FormElement>? Elements { get; set; }
+        public DbSet<FormBuilder.Models.FormValidation>? Validations { get; set; }
     }
 }

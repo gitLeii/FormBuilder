@@ -157,6 +157,7 @@ namespace FormBuilder.Controllers
 
                 }
                 sqlConnectionAdo.Insert(formData.Name, columnName, values);
+
                 return View(await elements.ToListAsync());
             }
             return View();
@@ -181,6 +182,7 @@ namespace FormBuilder.Controllers
             }
             return View(formData);
         }
+
 
         // POST: FormData/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
