@@ -64,10 +64,10 @@ namespace FormBuilder.Controllers
         // Create Form Fields
         public async Task<IActionResult> FormFieldAsync(int id)
         {
-            if (id == null)
+            /*if (id == null)
             {
                 return NotFound();
-            }
+            }*/
 
             var formData = await _context.Forms.FindAsync(id);
             if (formData == null)
@@ -81,7 +81,7 @@ namespace FormBuilder.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FormField(int id, [Bind("ElementId,ElementLabel,ElementType,ElementValue,FormDataId")] FormElement formElement)
+        public async Task<IActionResult> FormField(int id, [Bind("ElementId,ElementLabel,ElementType,ElementValue,FormDataId")] FormElement formElement, string ValidationType)
         {
             if (id != formElement.FormDataId)
             {
@@ -97,6 +97,11 @@ namespace FormBuilder.Controllers
                 {
                     _context.Elements.Add(formElement);
                     await _context.SaveChangesAsync();
+                    string check = ValidationType;
+                    if (check != null)
+                    {
+                        AddValidatoin(formElement.ElementType, ValidationType);
+                    }
                     return RedirectToAction(nameof(Index));
                 }
                 return View(formElement);
@@ -166,6 +171,19 @@ namespace FormBuilder.Controllers
         {
             //return View(_context.DataSets.ToList());
             return View();
+        }
+
+        public void AddValidatoin(string elementType, string ValidationType)
+        {
+            SqlConnectionAdo sqlConnectionAdo = new SqlConnectionAdo();
+            string columnName = "ElementType, ValidationType";
+            List<string> columnNames = new List<string>();
+            foreach (var item in columnName.Split(","))
+            {
+                columnNames.Add(item.Trim());
+            }
+            string values = String.Format("{0},{1}", elementType, ValidationType);
+            sqlConnectionAdo.Insert("Validations", columnNames, values);
         }
         // GET: FormData/Edit/5
         public async Task<IActionResult> Edit(int? id)

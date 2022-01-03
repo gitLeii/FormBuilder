@@ -17,7 +17,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ElementType" class="control-label"></label>
-                <input asp-for="ElementType" class="form-control" />
+                <input asp-for="ElementType" id="elementType" class="form-control" />
                 <span asp-validation-for="ElementType" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -25,15 +25,47 @@
                 <input asp-for="ElementValue" class="form-control" />
                 <span asp-validation-for="ElementValue" class="text-danger"></span>
             </div>
-            
             <br />
-            <div class="form-group">
-                <input type="submit" value="Add" class="btn btn-primary" />
+            <br />
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="col-md-6 form-group" >
+                        <input id="valid" name="ValidationType" type="text" value=""class="form-control" style="display:none"  />
+                        <br />
+                        <input class="btn btn-secondary" id="toggle" value="Add Validation"></input>
+                    </div>  
+                    <br />
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Add"  class="btn btn-primary" />
+                    </div>
+                </div>
             </div>
-        </form>
+        </form>            
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+     <script>  
+        const targetDiv = document.getElementById("valid");
+        const btn = document.getElementById("toggle");
+        btn.onclick = function () {
+            if (targetDiv.style.display !== "none") {
+            targetDiv.style.display = "none";
+            } else {
+            targetDiv.style.display = "block";
+            }
+        };
+  
+     </script>
 }
+ @*  $.ajax({
+            url: "/user/popo",
+            contentType: "application/json; charset=utf-8",
+            type: "post",
+            data: { ValidationType: text },
+            success: function (data) {
+            result = data;
+            $.each(result, function (m, n) {
+
+            });*@

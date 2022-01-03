@@ -38,9 +38,12 @@ namespace FormBuilder.Models
         {
             FormElements = new List<FormElement>();
         }
+        [Key]
         public int FormValidationId { get; set; }
-        public string ElementValue { get; set; }
+        public string ElementType { get; set; }
         public string ValidationType { get; set; } = string.Empty;
+
+        public int ElementId { set; get; }
         public virtual ICollection<FormElement> FormElements { get; set; }
     }
 

@@ -4,6 +4,7 @@ using FormBuilder.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FormBuilder.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211231053900_addedfields")]
+    partial class addedfields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,11 +67,40 @@ namespace FormBuilder.Data.Migrations
                     b.Property<int>("FormDataId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FormValidationId")
+                        .HasColumnType("int");
+
                     b.HasKey("ElementId");
 
                     b.HasIndex("FormDataId");
 
+                    b.HasIndex("FormValidationId");
+
                     b.ToTable("Elements");
+                });
+
+            modelBuilder.Entity("FormBuilder.Models.FormValidation", b =>
+                {
+                    b.Property<int>("FormValidationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormValidationId"), 1L, 1);
+
+                    b.Property<int>("ElementId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ElementType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FormValidationId");
+
+                    b.ToTable("Validations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -282,7 +313,13 @@ namespace FormBuilder.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FormBuilder.Models.FormValidation", "FormValidation")
+                        .WithMany("FormElements")
+                        .HasForeignKey("FormValidationId");
+
                     b.Navigation("FormData");
+
+                    b.Navigation("FormValidation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -337,6 +374,11 @@ namespace FormBuilder.Data.Migrations
                 });
 
             modelBuilder.Entity("FormBuilder.Models.FormData", b =>
+                {
+                    b.Navigation("FormElements");
+                });
+
+            modelBuilder.Entity("FormBuilder.Models.FormValidation", b =>
                 {
                     b.Navigation("FormElements");
                 });
