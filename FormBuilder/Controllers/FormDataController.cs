@@ -100,7 +100,7 @@ namespace FormBuilder.Controllers
                     string check = ValidationType;
                     if (check != null)
                     {
-                        AddValidatoin(formElement.ElementType, ValidationType);
+                        AddValidatoin(formElement.ElementType, ValidationType, formElement.ElementId);
                     }
                     return RedirectToAction(nameof(Index));
                 }
@@ -173,17 +173,29 @@ namespace FormBuilder.Controllers
             return View();
         }
 
-        public void AddValidatoin(string elementType, string ValidationType)
+        public void AddValidatoin(string elementType, string ValidationType, int id)
         {
             SqlConnectionAdo sqlConnectionAdo = new SqlConnectionAdo();
-            string columnName = "ElementType, ValidationType";
+            string columnName = "ElementType, ValidationType, ElementId";
             List<string> columnNames = new List<string>();
             foreach (var item in columnName.Split(","))
             {
                 columnNames.Add(item.Trim());
             }
-            string values = String.Format("{0},{1}", elementType, ValidationType);
+            string values = String.Format("{0},{1},{2}", elementType, ValidationType, id);
             sqlConnectionAdo.Insert("Validations", columnNames, values);
+
+            /*var formElementId = from e in _context.Validations
+                                where e.ElementId == id
+                                select e;
+            string value = formElementId.FirstOrDefault().FormValidationId.ToString();
+            string columnNme = "FormValidationId";
+            List<string> columnNmes = new List<string>();
+            foreach (var item in columnNme.Split(","))
+            {
+                columnNmes.Add(item.Trim());
+            }
+            sqlConnectionAdo.Insert("Elements", columnNmes, value);*/
         }
         // GET: FormData/Edit/5
         public async Task<IActionResult> Edit(int? id)
