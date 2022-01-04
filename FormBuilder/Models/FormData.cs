@@ -40,7 +40,6 @@ namespace FormBuilder.Models
         }
         [Key]
         public int FormValidationId { get; set; }
-        public string ElementType { get; set; }
         public string ValidationType { get; set; } = string.Empty;
 
         public int ElementId { set; get; }

@@ -100,7 +100,7 @@ namespace FormBuilder.Controllers
                     string check = ValidationType;
                     if (check != null)
                     {
-                        AddValidatoin(formElement.ElementType, ValidationType, formElement.ElementId);
+                        AddValidatoin(ValidationType, formElement.ElementId);
                     }
                     return RedirectToAction(nameof(Index));
                 }
@@ -173,29 +173,17 @@ namespace FormBuilder.Controllers
             return View();
         }
 
-        public void AddValidatoin(string elementType, string ValidationType, int id)
+        public void AddValidatoin(string ValidationType, int id)
         {
             SqlConnectionAdo sqlConnectionAdo = new SqlConnectionAdo();
-            string columnName = "ElementType, ValidationType, ElementId";
+            string columnName = "ValidationType, ElementId";
             List<string> columnNames = new List<string>();
             foreach (var item in columnName.Split(","))
             {
                 columnNames.Add(item.Trim());
             }
-            string values = String.Format("{0},{1},{2}", elementType, ValidationType, id);
+            string values = String.Format("{0},{1}", ValidationType, id);
             sqlConnectionAdo.Insert("Validations", columnNames, values);
-
-            /*var formElementId = from e in _context.Validations
-                                where e.ElementId == id
-                                select e;
-            string value = formElementId.FirstOrDefault().FormValidationId.ToString();
-            string columnNme = "FormValidationId";
-            List<string> columnNmes = new List<string>();
-            foreach (var item in columnNme.Split(","))
-            {
-                columnNmes.Add(item.Trim());
-            }
-            sqlConnectionAdo.Insert("Elements", columnNmes, value);*/
         }
         // GET: FormData/Edit/5
         public async Task<IActionResult> Edit(int? id)
