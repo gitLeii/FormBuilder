@@ -40,8 +40,9 @@ namespace FormBuilder.Models
         }
         [Key]
         public int FormValidationId { get; set; }
-        public string ValidationType { get; set; } = string.Empty;
-
+        public string Key { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+        public string ValidationMessage { get; set; } = string.Empty;
         public int ElementId { set; get; }
         public virtual ICollection<FormElement> FormElements { get; set; }
     }

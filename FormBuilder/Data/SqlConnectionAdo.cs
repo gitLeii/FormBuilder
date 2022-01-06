@@ -11,7 +11,13 @@ namespace FormBuilder.Data
         {
             string trim = Regex.Replace(tblName, @"\s", "");
             string tableName = trim;
-            List<string> columnList = columnName;
+            //List<string> columnList = columnName;
+            List<string> columnList = new List<string>();
+            foreach (var item in columnName)
+            {
+                string trimm = Regex.Replace(item, @"\s", "");
+                columnList.Add(trimm);
+            }
             string columnLists = String.Join(",", columnList);
             string createTableScript = string.Format("CREATE TABLE {0}([FormID] [int] IDENTITY(1,1) NOT NULL)", tableName);
             string addColumnScript = "ALTER TABLE {0} Add {1} [nvarchar](Max)";
@@ -42,7 +48,13 @@ namespace FormBuilder.Data
         {
             string trim = Regex.Replace(tblName, @"\s", "");
             string tableName = trim;
-            List<string> columnList = columnName;
+            //List<string> columnList = columnName;
+            List<string> columnList = new List<string>();
+            foreach (var item in columnName)
+            {
+                string trimm = Regex.Replace(item, @"\s", "");
+                columnList.Add(trimm);
+            }
             string columnLists = String.Join(",", columnList);
             List<string> colLists = new List<string>();
             foreach (var item in values.Split(','))
@@ -56,7 +68,9 @@ namespace FormBuilder.Data
         }
         public void Delete(string tblName)
         {
-            if (CheckObjectExists(tblName, "CheckTableExists"))
+            string trim = Regex.Replace(tblName, @"\s", "");
+            string tableName = trim;
+            if (CheckObjectExists(tableName, "CheckTableExists"))
             {
                 /* If table object not exists then Create the Table*/
                 string deleteScript = string.Format("DROP TABLE {0}", tblName);

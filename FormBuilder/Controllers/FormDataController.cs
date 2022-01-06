@@ -81,7 +81,7 @@ namespace FormBuilder.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FormField(int id, [Bind("ElementId,ElementLabel,ElementType,ElementValue,FormDataId")] FormElement formElement, string ValidationType)
+        public async Task<IActionResult> FormField(int id, [Bind("ElementId,ElementLabel,ElementType,ElementValue,FormDataId")] FormElement formElement, string ValidationKey, string ValidationValue, string ValidationMessage)
         {
             if (id != formElement.FormDataId)
             {
@@ -97,11 +97,17 @@ namespace FormBuilder.Controllers
                 {
                     _context.Elements.Add(formElement);
                     await _context.SaveChangesAsync();
-                    string check = ValidationType;
-                    if (check != null)
+                    string check = ValidationKey;
+                    string check1 = ValidationValue;
+                    if (ValidationMessage == null)
                     {
-                        AddValidatoin(ValidationType, formElement.ElementId);
+                        ValidationMessage = "Required";
                     }
+                    if (check != null || check1 != null)
+                    {
+                        AddValidatoin(ValidationKey, ValidationValue, ValidationMessage, formElement.ElementId);
+                    }
+
                     return RedirectToAction(nameof(Index));
                 }
                 return View(formElement);
@@ -115,6 +121,8 @@ namespace FormBuilder.Controllers
             var elements = from e in _context.Elements
                            where e.FormDataId == id
                            select e;
+
+
             FormData formData = await _context.Forms.FindAsync(id);
             ViewBag.Id = id;
             ViewBag.FormName = formData.Name;
@@ -124,6 +132,7 @@ namespace FormBuilder.Controllers
 
             foreach (var element in elements)
             {
+
                 columnName.Add(element.ElementLabel);
 
             }
@@ -144,6 +153,7 @@ namespace FormBuilder.Controllers
             if (ModelState.IsValid)
             {
                 string[] val = HttpContext.Request.Form["ElementValue"];
+
                 string values = String.Join(",", val);
                 var elements = from e in _context.Elements
                                where e.FormDataId == id
@@ -159,7 +169,6 @@ namespace FormBuilder.Controllers
                 foreach (var element in elements)
                 {
                     columnName.Add(element.ElementLabel);
-
                 }
                 sqlConnectionAdo.Insert(formData.Name, columnName, values);
 
@@ -173,16 +182,16 @@ namespace FormBuilder.Controllers
             return View();
         }
 
-        public void AddValidatoin(string ValidationType, int id)
+        public void AddValidatoin(string ValidationKey, string ValidationValue, string ValidationMessage, int id)
         {
             SqlConnectionAdo sqlConnectionAdo = new SqlConnectionAdo();
-            string columnName = "ValidationType, ElementId";
+            string columnName = "[Key],[Value],ValidationMessage,ElementId";
             List<string> columnNames = new List<string>();
             foreach (var item in columnName.Split(","))
             {
                 columnNames.Add(item.Trim());
             }
-            string values = String.Format("{0},{1}", ValidationType, id);
+            string values = String.Format("{0},{1},{2},{3}", ValidationKey, ValidationValue, ValidationMessage, id);
             sqlConnectionAdo.Insert("Validations", columnNames, values);
         }
         // GET: FormData/Edit/5
